@@ -188,7 +188,7 @@ wire       agu_i_store   = agu_i_info [`DECINFO_AGU_STORE  ];
                                     ({`XLEN{agu_i_size_b }} & {4{agu_i_rs2[ 7:0]}})
                                   | ({`XLEN{agu_i_size_hw}} & {2{agu_i_rs2[15:0]}})
                                   | ({`XLEN{agu_i_size_w }} & {1{agu_i_rs2[31:0]}});
-  assign agu_cmd_wmask =             ({`XLEN/8{agu_i_size_b }} & (4'b0001 << agu_cmd_addr[1:0]))
+  assign agu_cmd_wmask =          ({`XLEN/8{agu_i_size_b }} & (4'b0001 <<  {agu_cmd_addr[1],1'b0}))
           | ({`XLEN/8{agu_i_size_hw}} & (4'b0011 << {agu_cmd_addr[1],1'b0}))
           | ({`XLEN/8{agu_i_size_w }} & (4'b1111));
        

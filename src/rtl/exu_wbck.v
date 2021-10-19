@@ -43,6 +43,7 @@ module exu_wbck (
     assign wbck_i_data = wbck_sel_alu? alu_wbck_i_data : longp_wbck_i_data;
     assign wbck_i_rdidx = wbck_sel_alu? alu_wbck_i_rdidx : longp_wbck_i_rdidx;
 
+    wire rf_wbck_o_ready;
     assign rf_wbck_o_ready = 1'b1; //regfile is always ready to write
     assign wbck_i_ready = rf_wbck_o_ready;
     wire rf_wbck_o_valid = wbck_i_valid;

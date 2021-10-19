@@ -80,7 +80,7 @@ module exu_alu(
   //    * Bus RSP channel
   input                          agu_rsp_valid,     // Response valid 
   output                         agu_rsp_ready,     // Response ready
-  input  [`XLEN-1:0]             agu_rsp_rdata,
+  // input  [`XLEN-1:0]             agu_rsp_rdata,
 
   input  clk,
   input  rst_n

@@ -56,7 +56,7 @@ module exu (
     
     input agu_rsp_valid,
     output agu_rsp_ready,
-    input [`XLEN-1:0] agu_rsp_rdata,
+    // input [`XLEN-1:0] agu_rsp_rdata,
 
     input clk,
     input rst_n
@@ -247,7 +247,7 @@ exu_alu u_exu_alu (
     .agu_cmd_itag(agu_cmd_itag),//to lsu
     .agu_rsp_valid(agu_rsp_valid),//from lsu
     .agu_rsp_ready(agu_rsp_ready),//to lsu
-    .agu_rsp_rdata(agu_rsp_rdata),//from lsu
+    // .agu_rsp_rdata(agu_rsp_rdata),//from lsu
 
     .clk(clk),
     .rst_n(rst_n)

@@ -92,12 +92,14 @@ module lsu_ctrl (
     assign pre_agu_rsp_rdata = dtcm_rsp_rdata;
     
     //adjust data-bit for lb/lh/lw instr.
-    assign lsu_o_wbck_data   =  (({`XLEN{rsp_lb }} & {{24{pre_agu_rsp_rdata[7]}}, pre_agu_rsp_rdata[ 7:0]})
+    assign lsu_o_wbck_data   =  {(({`XLEN{rsp_lb }} & {{24{pre_agu_rsp_rdata[7]}}, pre_agu_rsp_rdata[ 7:0]})
                                 | ({`XLEN{rsp_lh }} & {{16{pre_agu_rsp_rdata[15]}}, pre_agu_rsp_rdata[15:0]}) 
-                                | ({`XLEN{rsp_lw }} & pre_agu_rsp_rdata[31:0])) & {`XLEN{wbck_hsked}}
+                                | ({`XLEN{rsp_lw }} & pre_agu_rsp_rdata[31:0])) 
                                 |({`XLEN{rsp_lbu }} & {{24'b0}, pre_agu_rsp_rdata[ 7:0]})
-                                | ({`XLEN{rsp_lhu }} & {{16'b0}, pre_agu_rsp_rdata[15:0]});
+                                | ({`XLEN{rsp_lhu }} & {{16'b0}, pre_agu_rsp_rdata[15:0]})} & {`XLEN{wbck_hsked}};
   
+    
+    
     //Assume DTCM return data 1cycle later
     gnrl_pipe_stage #(
         .DW(`ITAG_WIDTH+4),

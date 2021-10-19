@@ -38,12 +38,13 @@ module dtcm_ctrl (
     assign dtcm_ram_we = ~lsu2dtcm_cmd_read;
     assign dtcm_ram_addr = lsu2dtcm_cmd_addr[`DTCM_ADDR_WIDTH-1:2];
     assign dtcm_ram_wem = lsu2dtcm_cmd_wmask;
-    assign dtcm_ram_din = lsu2dtcm_cmd_wdata;
+    assign dtcm_ram_din = lsu2dtcm_cmd_wdata; //& {{`XLEN/4{lsu2dtcm_cmd_wmask[3]}},{`XLEN/4{lsu2dtcm_cmd_wmask[2]}},
+    //{`XLEN/4{lsu2dtcm_cmd_wmask[1]}},{`XLEN/4{lsu2dtcm_cmd_wmask[0]}}};
 
 
     wire lsu2dtcm_rsp_valid_set = lsu2dtcm_cmd_valid;
     wire lsu2dtcm_rsp_valid_clr = lsu2dtcm_rsp_valid_r;
     wire lsu2dtcm_rsp_valid_nxt = lsu2dtcm_rsp_valid_set | (~lsu2dtcm_rsp_valid_clr);
-    wire lsu2dtcm_rsp_valid_ena = 1'b1;
+    wire lsu2dtcm_rsp_valid_ena = lsu2dtcm_rsp_valid_set | lsu2dtcm_rsp_valid_clr;
     gnrl_dfflr #(1) lsu2dtcm_rsp_valid_dfflr(lsu2dtcm_rsp_valid_ena, lsu2dtcm_rsp_valid_nxt, lsu2dtcm_rsp_valid_r, clk, rst_n);
 endmodule

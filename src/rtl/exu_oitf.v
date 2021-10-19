@@ -45,8 +45,8 @@ module exu_oitf (
     wire [`RFIDX_WIDTH-1:0] rdidx_r[`OITF_DEPTH-1:0];
     //wire [`PC_SIZE-1:0] pc_r[`OITF_DEPTH-1:0];
     //check full/empty and fifo ptrs(alc ptr & ret ptr)
-    wire alc_ptr_ena = disp_ena;
-    wire ret_ptr_ena = ret_ena;
+    wire alc_ptr_ena = disp_ena; //write point enable
+    wire ret_ptr_ena = ret_ena; //read point enable
 
     wire oitf_full; //oitf empty is one of the output ports
 
@@ -59,16 +59,21 @@ module exu_oitf (
             wire alc_ptr_flg_r;
             wire alc_ptr_flg_nxt = ~alc_ptr_flg_r;
             wire alc_ptr_flg_ena = (alc_ptr_r == ($unsigned(`OITF_DEPTH-1))) & alc_ptr_ena;
-            wire [`ITAG_WIDTH-1:0] alc_ptr_nxt = alc_ptr_flg_ena ? `ITAG_WIDTH'b0: (alc_ptr_r + 1'b1);
+            gnrl_dfflr #(1) alc_ptr_flg_dfflr(alc_ptr_flg_ena, alc_ptr_flg_nxt, alc_ptr_flg_r, clk, rst_n);
+
+
+            wire [`ITAG_WIDTH-1:0] alc_ptr_nxt ;
+            assign alc_ptr_nxt = alc_ptr_flg_ena ? `ITAG_WIDTH'b0: (alc_ptr_r + 1'b1);
+            gnrl_dfflr #(`ITAG_WIDTH) alc_ptr_dfflr(alc_ptr_ena, alc_ptr_nxt, alc_ptr_r, clk, rst_n);
+            
             // ret ptr(tail of fifo)
             wire ret_ptr_flg_r;
             wire ret_ptr_flg_nxt = ~ret_ptr_flg_r;
             wire ret_ptr_flg_ena = (ret_ptr_r == ($unsigned(`OITF_DEPTH-1))) & ret_ptr_ena;
-            wire [`ITAG_WIDTH-1:0] ret_ptr_nxt = ret_ptr_flg_ena? `ITAG_WIDTH'b0:(ret_ptr_r + 1'b1);
-
-            gnrl_dfflr #(1) alc_ptr_flg_dfflr(alc_ptr_flg_ena, alc_ptr_flg_nxt, alc_ptr_flg_r, clk, rst_n);
-            gnrl_dfflr #(`ITAG_WIDTH) alc_ptr_dfflr(alc_ptr_ena, alc_ptr_nxt, alc_ptr_r, clk, rst_n);
             gnrl_dfflr #(1) ret_ptr_flg_dfflr(ret_ptr_flg_ena, ret_ptr_flg_nxt, ret_ptr_flg_r, clk, rst_n);
+            wire [`ITAG_WIDTH-1:0] ret_ptr_nxt;
+            assign ret_ptr_nxt= ret_ptr_flg_ena? `ITAG_WIDTH'b0:(ret_ptr_r + 1'b1);
+
             gnrl_dfflr #(`ITAG_WIDTH) ret_ptr_dfflr(ret_ptr_ena, ret_ptr_nxt, ret_ptr_r, clk, rst_n);
             
             assign oitf_empty = (alc_ptr_r == ret_ptr_r) & (ret_ptr_flg_r == alc_ptr_flg_r);
