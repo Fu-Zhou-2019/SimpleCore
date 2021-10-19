@@ -94,6 +94,9 @@ wire [`RFIDX_WIDTH-1:0] dec_rs2idx;
 wire [`RFIDX_WIDTH-1:0] dec_rdidx;
 wire dec_rs1en;
 wire dec_rs2en;
+assign dec2ifu_rden = dec_rdwen;
+assign dec2ifu_rs1en = dec_rs1en;
+assign dec2ifu_rdidx = dec_rdidx;
 
 exu_decode u_exu_decode (
     .i_instr(i_ir),//from ifu

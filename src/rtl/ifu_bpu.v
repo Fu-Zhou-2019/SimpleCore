@@ -89,7 +89,7 @@ module ifu_bpu(
         2. IR is NOT empty(not nop instruction), indicates instruction in IR may be able to write back to xn. 
   */
   wire jalr_rs1x1_dep = dec_i_valid & dec_jalr & dec_jalr_rs1x1 & ((~oitf_empty) | (jalr_rs1idx_match_irrdidx));
-  wire jalr_rs1xn_dep = dec_i_valid & dec_jalr & dec_jalr_rs1xn & (~oitf_empty) & (~ir_nop_instr);
+  wire jalr_rs1xn_dep = dec_i_valid & dec_jalr & dec_jalr_rs1xn & ((~oitf_empty) | (~ir_nop_instr));
 
   /*
   To set when bpu needs to wait.
