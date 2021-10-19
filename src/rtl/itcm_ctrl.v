@@ -30,7 +30,7 @@ module itcm_ctrl (
     wire ifu2itcm_rsp_hdskd = ifu2itcm_rsp_valid & ifu2itcm_rsp_ready;
     assign ifu2itcm_rsp_rdata = {`ITCM_RAM_DW{ifu2itcm_rsp_hdskd}} & itcm_ram_dout;
     assign itcm_ram_we = ~ifu2itcm_cmd_read;
-    assign itcm_ram_addr = ifu2itcm_cmd_addr[`ITCM_ADDR_WIDTH-1:2];
+    assign itcm_ram_addr =ifu2itcm_cmd_addr[`ITCM_ADDR_WIDTH-1:2];
     assign itcm_ram_wem = ifu2itcm_cmd_wmask;
     assign itcm_ram_din = ifu2itcm_cmd_wdata;
     
