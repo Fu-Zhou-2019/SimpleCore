@@ -153,7 +153,7 @@ exu_disp u_exu_disp (
     .disp_i_valid(i_valid),//from ifu
     .disp_i_ready(i_ready),//to ifu
     .disp_i_rs1idx(i_rs1idx),//from ifu rs1idx_r
-    .disp_i_rs2idx(i_rs1idx),//from ifu rs2idx_r
+    .disp_i_rs2idx(i_rs2idx),//from ifu rs2idx_r
     .disp_i_rs1en(dec_rs1en),//from dec
     .disp_i_rs2en(dec_rs2en),//from dec
     .disp_i_rdwen(dec_rdwen),//from dec

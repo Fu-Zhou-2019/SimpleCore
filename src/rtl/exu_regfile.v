@@ -33,7 +33,7 @@ generate
         end        
         else begin:not_x0
             assign rf_wen[i] = wbck_dest_ena & (wbck_dest_idx == i);
-            gnrl_dffl #(`XLEN) rf_dffl(rf_wen[i], wbck_dest_data, rf_r[i], clk);
+            gnrl_dfflr #(`XLEN) rf_dfflr(rf_wen[i], wbck_dest_data, rf_r[i], clk, rst_n);
         end
     end
 endgenerate
