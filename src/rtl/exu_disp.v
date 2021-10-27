@@ -72,13 +72,8 @@ wire raw_dep = oitfrd_match_disprs1 | oitfrd_match_disprs2;
 wire waw_dep = oitfrd_match_disprd;
 wire dep = raw_dep | waw_dep;
 
-<<<<<<< HEAD
-wire disp_condition = (~dep) & (disp_o_alu_longpipe ? disp_oitf_ready: 1'b1); // different from e203, we use disp_o_alu_longpipe here instead of disp_alu_longp_prdt;assume both mul/div and LSU need oitf ready
-                                    //maybe critical path here
-=======
 wire disp_condition = (~dep)
                                     & (disp_o_alu_longpipe ? disp_oitf_ready: 1'b1);
->>>>>>> 4fcb99c379c2d937f7bb79d728993d228c62db1b
 //handshake
 wire disp_i_valid_pos = disp_condition & disp_i_valid;
 assign disp_i_ready = disp_condition & disp_o_alu_ready;

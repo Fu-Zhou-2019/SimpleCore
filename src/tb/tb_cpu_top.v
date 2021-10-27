@@ -20,25 +20,15 @@ module tb_cpu_top;
         pc_rtvec = `PC_SIZE'h0000_0080;
         #30 rst_n = 1;
         @(posedge clk)
-<<<<<<< HEAD
-        #50000 $finish;
-=======
         #8000 $finish;
->>>>>>> 4fcb99c379c2d937f7bb79d728993d228c62db1b
     end 
     reg[31:0] instr_in;
     integer i;
     integer test_file;
     initial begin
-<<<<<<< HEAD
-        test_file = $fopen("C:\\Users\\wen\\Desktop\\rv32ui-p-and","rb");
-        for(i=0; i<3500; i=i+1) begin
-            //$display(instr_in);
-=======
         test_file = $fopen("C:\\Users\\hurui\\Desktop\\test_insr\\rv32ui-p-add","rb");
         for(i=0; i<3500; i=i+1) begin
             $display(instr_in);
->>>>>>> 4fcb99c379c2d937f7bb79d728993d228c62db1b
             if($fread(instr_in, test_file))
                 u_cpu_top.u_srams.u_itcm_ram.u_itcm_gnrl_ram.mem_r[i] <=  {instr_in[7:0],instr_in[15:8],instr_in[23:16],instr_in[31:24]};
             else
