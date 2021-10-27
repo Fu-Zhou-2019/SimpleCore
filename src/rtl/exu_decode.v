@@ -158,8 +158,8 @@ wire rv32_remu = rv32_op & func3_111 & func7_0000001;
 
 //=================================================
 //decode info of 1cycle ALU group(excluding MULDIV)
-wire alu_op = (~rv32_shamt_illegal)
-                & (rv32_lui
+wire alu_op = //(~rv32_shamt_illegal) &
+                (rv32_lui
                 | rv32_auipc
                 | rv32_op_imm
                 | (rv32_op & ~func7_0000001) //exclude muldiv
@@ -268,7 +268,7 @@ wire all_ones_illegal = opcode_1_0_11
                                     & rs1_x31
                                     & rs2_x31
                                     & func7_1111111;
-wire rv32_shamt_illegal = rv32_op_imm_sxxi & (i_instr[24] != 0);
+//wire rv32_shamt_illegal = rv32_op_imm_sxxi & (i_instr[24] != 0);
 wire rv32_legal_ops = alu_op | muldiv_op | ls_op | bjp_op;
 
 
@@ -290,7 +290,7 @@ assign dec_imm = ({`XLEN{rv32_imm_sel_i}} & rv32_i_imm)
                             | ({`XLEN{rv32_imm_sel_j}} & rv32_j_imm);
 assign dec_illegal = all_ones_illegal
                                 | all_zeros_illegal
-                                | rv32_shamt_illegal
+                               // | rv32_shamt_illegal
                                 | ~rv32_legal_ops;
 assign dec_jal = rv32_jal;
 assign dec_jalr = rv32_jalr;
