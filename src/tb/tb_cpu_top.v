@@ -26,7 +26,7 @@ module tb_cpu_top;
     integer i;
     integer test_file;
     initial begin
-        test_file = $fopen("C:\\Users\\hurui\\Desktop\\test_insr\\rv32ui-p-lb","rb");
+        test_file = $fopen("C:\\Users\\wen\\Desktop\\test_insr\\rv32ui-p-lb","rb");
         for(i=0; i<5000; i=i+1) begin
             if($fread(instr_in, test_file)) begin
                 $display(instr_in);

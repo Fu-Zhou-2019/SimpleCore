@@ -99,20 +99,12 @@ module lsu_ctrl (
 
     
     //adjust data-bit for lb/lh/lw instr.
-<<<<<<< HEAD
-    assign lsu_o_wbck_data   =  {(({`XLEN{rsp_lb }} & {{24{pre_agu_rsp_rdata[7]}}, pre_agu_rsp_rdata[ 7:0]})
-                                | ({`XLEN{rsp_lh }} & {{16{pre_agu_rsp_rdata[15]}}, pre_agu_rsp_rdata[15:0]}) 
-                                | ({`XLEN{rsp_lw }} & pre_agu_rsp_rdata[31:0])) 
-                                |({`XLEN{rsp_lbu }} & {{24'b0}, pre_agu_rsp_rdata[ 7:0]})
-                                | ({`XLEN{rsp_lhu }} & {{16'b0}, pre_agu_rsp_rdata[15:0]})} & {`XLEN{wbck_hsked}};
-=======
     assign lsu_o_wbck_data   =  {(({`XLEN{rsp_lb }} & {{24{rdata_algn[7]}}, rdata_algn[ 7:0]})
                                 | ({`XLEN{rsp_lh }} & {{16{rdata_algn[15]}}, rdata_algn[15:0]}) 
                                 | ({`XLEN{rsp_lw }} & rdata_algn[31:0])) 
                                 |({`XLEN{rsp_lbu }} & {{24'b0}, rdata_algn[ 7:0]})
                                 | ({`XLEN{rsp_lhu }} & {{16'b0}, rdata_algn[15:0]})};
 
->>>>>>> 11f58ea8478e7d3090623ec55b6863371dbfaee6
   
     
     
