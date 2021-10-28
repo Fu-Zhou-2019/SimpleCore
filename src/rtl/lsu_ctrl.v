@@ -55,11 +55,13 @@ module lsu_ctrl (
 
     //third pipeline stage
     //although OITF is 2 instructions deep, we only allow 1 outstanding instruction for lsu
-    wire [`ITAG_WIDTH+4-1:0] agu_cmd_fifo_data = 
+    wire [1:0] agu_cmd_addr_align_shift = agu_cmd_addr[1:0];
+    wire [`ITAG_WIDTH+6-1:0] agu_cmd_fifo_data = 
                                                 {agu_cmd_itag, 
                                                 agu_cmd_read, 
                                                 agu_cmd_usign, 
-                                                agu_cmd_size};
+                                                agu_cmd_size,
+                                                agu_cmd_addr_align_shift};
 
     
     wire fifo_i_valid = agu_cmd_valid;
@@ -72,10 +74,12 @@ module lsu_ctrl (
     wire agu_cmd_read_o;
     wire [1:0] agu_cmd_size_o;
     wire agu_cmd_usign_o;
+    wire [1:0] agu_cmd_cmd_align_shift_o;
     assign {agu_cmd_itag_o,
             agu_cmd_read_o,
             agu_cmd_usign_o,
-            agu_cmd_size_o} = agu_cmd_fifo_data_o;
+            agu_cmd_size_o,
+            agu_cmd_cmd_align_shift_o} = agu_cmd_fifo_data_o;
 
     wire [2-1:0]     pre_agu_rsp_size;
     wire rsp_lb   = (agu_cmd_size_o == 2'b00) & (agu_cmd_usign_o  == 1'b0);
@@ -90,19 +94,31 @@ module lsu_ctrl (
 
     wire [`XLEN-1:0] pre_agu_rsp_rdata;
     assign pre_agu_rsp_rdata = dtcm_rsp_rdata;
+    wire [`XLEN-1:0] rdata_algn= 
+      (pre_agu_rsp_rdata >> {agu_cmd_cmd_align_shift_o,3'b0});
+
     
     //adjust data-bit for lb/lh/lw instr.
+<<<<<<< HEAD
     assign lsu_o_wbck_data   =  {(({`XLEN{rsp_lb }} & {{24{pre_agu_rsp_rdata[7]}}, pre_agu_rsp_rdata[ 7:0]})
                                 | ({`XLEN{rsp_lh }} & {{16{pre_agu_rsp_rdata[15]}}, pre_agu_rsp_rdata[15:0]}) 
                                 | ({`XLEN{rsp_lw }} & pre_agu_rsp_rdata[31:0])) 
                                 |({`XLEN{rsp_lbu }} & {{24'b0}, pre_agu_rsp_rdata[ 7:0]})
                                 | ({`XLEN{rsp_lhu }} & {{16'b0}, pre_agu_rsp_rdata[15:0]})} & {`XLEN{wbck_hsked}};
+=======
+    assign lsu_o_wbck_data   =  {(({`XLEN{rsp_lb }} & {{24{rdata_algn[7]}}, rdata_algn[ 7:0]})
+                                | ({`XLEN{rsp_lh }} & {{16{rdata_algn[15]}}, rdata_algn[15:0]}) 
+                                | ({`XLEN{rsp_lw }} & rdata_algn[31:0])) 
+                                |({`XLEN{rsp_lbu }} & {{24'b0}, rdata_algn[ 7:0]})
+                                | ({`XLEN{rsp_lhu }} & {{16'b0}, rdata_algn[15:0]})};
+
+>>>>>>> 11f58ea8478e7d3090623ec55b6863371dbfaee6
   
     
     
     //Assume DTCM return data 1cycle later
     gnrl_pipe_stage #(
-        .DW(`ITAG_WIDTH+4),
+        .DW(`ITAG_WIDTH+6),
         .DP(1)
         //although OITF is 2 instructions deep, we only allow 1 outstanding instruction for lsu
     ) u_lsu_pipe_stage (

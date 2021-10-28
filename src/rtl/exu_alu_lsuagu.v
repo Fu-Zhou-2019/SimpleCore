@@ -173,7 +173,7 @@ wire       agu_i_store   = agu_i_info [`DECINFO_AGU_STORE  ];
   /////////////////////////////////////////////////////////////////////////////////
   // Implement the Write-back interfaces (unaligned and AMO instructions) 
 
-  assign agu_o_valid =   agu_i_valid &  & agu_cmd_ready;
+  assign agu_o_valid =   agu_i_valid & agu_cmd_ready;
   assign agu_o_wbck_wdat = {`XLEN{1'b0 }};
 
   assign agu_rsp_ready = 1'b1;

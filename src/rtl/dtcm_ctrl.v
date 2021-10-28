@@ -35,7 +35,7 @@ module dtcm_ctrl (
     assign lsu2dtcm_cmd_ready = 1;//only lsu can access dtcm, so dtcm is always ready for lsu
     assign lsu2dtcm_rsp_valid = lsu2dtcm_rsp_valid_r;
     assign lsu2dtcm_rsp_rdata = dtcm_ram_dout;
-    assign dtcm_ram_we = ~lsu2dtcm_cmd_read;
+    assign dtcm_ram_we = ~lsu2dtcm_cmd_read & lsu2dtcm_cmd_valid;
     assign dtcm_ram_addr = lsu2dtcm_cmd_addr[`DTCM_ADDR_WIDTH-1:2];
     assign dtcm_ram_wem = lsu2dtcm_cmd_wmask;
     assign dtcm_ram_din = lsu2dtcm_cmd_wdata; //& {{`XLEN/4{lsu2dtcm_cmd_wmask[3]}},{`XLEN/4{lsu2dtcm_cmd_wmask[2]}},
