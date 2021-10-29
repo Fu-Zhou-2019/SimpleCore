@@ -31,7 +31,7 @@ module tb_cpu_top;
             if($fread(instr_in, test_file)) begin
                 $display(instr_in);
                 if(i==240) begin
-                    $display(instr_in);
+                $display(instr_in);
                 end
                 u_cpu_top.u_srams.u_itcm_ram.u_itcm_gnrl_ram.mem_r[i] =  {instr_in[7:0],instr_in[15:8],instr_in[23:16],instr_in[31:24]};
                 u_cpu_top.u_srams.u_dtcm_ram.u_dtcm_gnrl_ram.mem_r[i] =  {instr_in[7:0],instr_in[15:8],instr_in[23:16],instr_in[31:24]};
